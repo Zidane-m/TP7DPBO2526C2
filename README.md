@@ -12,11 +12,11 @@ Sistem Informasi Manajemen Perpustakaan (**Library System**) berbasis **PHP Nati
 ## 1. Desain dan Fungsi Program
 
 ### A. Deskripsi Umum dan Pemisahan Tanggung Jawab (*Separation of Concerns*)
-Website ini mengimplementasikan sistem manajemen peminjaman buku perpustakaan yang dibangun dengan arsitektur berorientasi objek murni (*PHP Native OOP*). Seluruh sistem dipisahkan sesuai tanggung jawabnya (*Separation of Concerns*) tanpa *over-engineering*, mematuhi struktur standar Modul 8:
+Website ini mengimplementasikan sistem manajemen peminjaman buku perpustakaan yang dibangun dengan arsitektur berorientasi objek murni (*PHP Native OOP*). Seluruh sistem dipisahkan sesuai tanggung jawabnya (*Separation of Concerns*) secara modular dan terstruktur, mematuhi struktur standar Modul 8:
 - **`class/` (Business Logic & Database Interaction):** Berisi Class PHP untuk setiap entitas tabel (`Book.php`, `Member.php`, dan `Loan.php`). Seluruh operasi manipulasi database dikapsulasi di dalam method class dan **wajib menggunakan Prepared Statement** untuk mencegah kerentanan *SQL Injection*.
 - **`config/` (Database Connection):** Mengelola koneksi database MySQL terpusat (`db.php`) menggunakan interface **PDO** dengan mode pelaporan galat *Exception* (`PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION`) dan pengambilan data bertipe array asosiatif (`PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC`).
 - **`database/` (Data Definition):** Berisi berkas skrip SQL (`db_library.sql`) yang memuat pembuatan database, skema tabel, relasi *Foreign Key*, serta data awal (*seeding*).
-- **`view/` (Modular User Interface):** Berisi komponen antarmuka visual GUI modular (`header.php`, `footer.php`, `books.php`, `members.php`, dan `loans.php`) yang bersih, berfokus pada fungsi, serta menerapkan panduan *antislop*.
+- **`view/` (Modular User Interface):** Berisi komponen antarmuka visual GUI modular (`header.php`, `footer.php`, `books.php`, `members.php`, dan `loans.php`) yang bersih, rapi, dan berfokus pada kemudahan pengguna.
 - **`index.php` (Front Controller):** Titik masuk utama aplikasi yang mengatur siklus *HTTP Request-Response*, perutean halaman dinamis (`?page=...`), dan pengalihan aksi (*redirect*) setelah operasi POST/GET untuk mencegah *form resubmission*.
 - **`style.css` (Visual Styling):** Penataan antarmuka yang bersih, kontras tinggi, dan responsif.
 
@@ -153,7 +153,7 @@ flowchart TD
 ### B. Mekanisme Kunci Program
 
 1. **Keamanan Eksekusi Query (100% Prepared Statements):**
-   Sesuai ketentuan mutlak Modul 8, seluruh query database baik pembacaan (*SELECT*), penambahan (*INSERT*), pengubahan (*UPDATE*), maupun penghapusan (*DELETE*) dilakukan dengan mekanisme dua tahap:
+   Sesuai spesifikasi Modul 8, seluruh query database baik pembacaan (*SELECT*), penambahan (*INSERT*), pengubahan (*UPDATE*), maupun penghapusan (*DELETE*) dilakukan dengan mekanisme dua tahap:
    ```php
    $stmt = $this->db->prepare("SELECT * FROM books WHERE id = ?");
    $stmt->execute([$id]);
@@ -168,8 +168,8 @@ flowchart TD
 3. **Pencegahan Pengiriman Ganda Formulir (*Post/Redirect/Get Pattern*):**
    Setelah pengguna mengirimkan form penambahan atau pengubahan data, server memproses data dan langsung melakukan pengalihan browser menggunakan `header("Location: index.php?page=...&msg=...")`. Hal ini mencegah dialog konfirmasi pengiriman ulang form saat pengguna me-*refresh* halaman.
 
-4. **Kepatuhan Tampilan Antislop:**
-   Antarmuka sengaja dirancang bersih, fungsional, menggunakan hierarki visual yang jelas, tipografi sistem yang tajam, kontras warna yang nyaman, serta tabel data yang informatif tanpa animasi berlebihan atau komponen tak perlu.
+4. **Desain Antarmuka yang Bersih dan Responsif:**
+   Antarmuka sengaja dirancang bersih, fungsional, menggunakan hierarki visual yang jelas, tipografi sistem yang tajam, kontras warna yang nyaman, serta tabel data yang informatif dan mudah digunakan di berbagai ukuran layar.
 
 ---
 
@@ -195,10 +195,10 @@ flowchart TD
 ### 4. Rekaman Video Pengujian Website (Demonstrasi Lengkap)
 Rekaman video demonstrasi menyeluruh yang memperlihatkan operasi Create, Read, Update, dan Delete untuk ketiga tabel (`books`, `members`, `loans`), validasi stok buku, serta pengembalian buku:
 
-- **Berkas Video:** [`Dokumentasi/gameplayrecord.mp4`](Dokumentasi/gameplayrecord.mp4)
+- **Berkas Video:** [`Dokumentasi/dokumentasi_tp7.mp4`](Dokumentasi/dokumentasi_tp7.mp4)
 
-<video src="Dokumentasi/gameplayrecord.mp4" controls width="640">
-  <p>Browser Anda tidak mendukung tag video. Silakan tonton berkas rekaman secara langsung melalui tautan berikut: <a href="Dokumentasi/gameplayrecord.mp4">Dokumentasi/gameplayrecord.mp4</a>.</p>
+<video src="Dokumentasi/dokumentasi_tp7.mp4" controls width="640">
+  <p>Browser Anda tidak mendukung tag video. Silakan tonton berkas rekaman secara langsung melalui tautan berikut: <a href="Dokumentasi/dokumentasi_tp7.mp4">Dokumentasi/dokumentasi_tp7.mp4</a>.</p>
 </video>
 
 ---
@@ -207,34 +207,33 @@ Rekaman video demonstrasi menyeluruh yang memperlihatkan operasi Create, Read, U
 
 ### Prasyarat:
 * **PHP**: Versi 7.4 atau yang lebih baru (disarankan PHP 8.x).
-* **Database**: MySQL / MariaDB (melalui Laragon atau XAMPP).
+* **Database**: MySQL / MariaDB (port default `3306`).
 * **Web Browser**: Google Chrome, Mozilla Firefox, Microsoft Edge, atau browser modern lainnya.
 
-### Langkah 1: Persiapan Database MySQL
-1. Buka aplikasi **Laragon** (atau XAMPP), lalu klik tombol **Start All** (pastikan modul MySQL telah berjalan pada port `3306`).
-2. Buka aplikasi manajemen basis data pilihan Anda (HeidiSQL, DBeaver, phpMyAdmin, atau MySQL CLI).
-3. Eksekusi berkas database yang berada di [`database/db_library.sql`](database/db_library.sql) untuk membuat database `db_library` beserta tabel dan data awalnya secara otomatis.
+### Langkah 1: Persiapan Database
+1. Pastikan service MySQL berjalan.
+2. Impor skrip basis data yang berada di [`database/db_library.sql`](database/db_library.sql) untuk menginisialisasi database `db_library` beserta skema tabel dan data awal:
+   ```bash
+   mysql -u root -p < database/db_library.sql
+   ```
+   *(atau gunakan antarmuka manajemen database seperti phpMyAdmin / HeidiSQL)*.
 
 ### Langkah 2: Menjalankan Web Server
 
-#### Cara A: Menggunakan PHP Built-in Server (Paling Cepat & Praktis)
-1. Buka terminal (PowerShell atau Command Prompt) dan arahkan ke direktori proyek ini:
+#### Opsi 1: PHP Built-in Server
+1. Buka terminal pada root direktori repositori:
    ```bash
-   cd "c:\Users\Pavilion\Documents\DOKUMEN TUGAS\Kuliah\SEM3\DPBO_SEM3\Praktikum\TP7DPBO2526C2"
+   cd TP7DPBO2526C2
    ```
 2. Jalankan server lokal bawaan PHP:
    ```bash
    php -S localhost:8000
    ```
-3. Buka peramban (browser) dan akses alamat:
+3. Buka browser dan akses:
    ```
    http://localhost:8000
    ```
 
-#### Cara B: Menggunakan Laragon (Virtual Host via Directory Junction)
-Jika Anda ingin mengakses melalui domain otomatis Laragon tanpa memindahkan berkas keluar dari folder tugas, jalankan perintah ini di Command Prompt (Run as Administrator):
-```cmd
-mklink /J "C:\laragon\www\TP7DPBO2526C2" "C:\Users\Pavilion\Documents\DOKUMEN TUGAS\Kuliah\SEM3\DPBO_SEM3\Praktikum\TP7DPBO2526C2"
-```
-Lalu akses di browser: `http://tp7dpbo2526c2.test`.
+#### Opsi 2: Web Server Lokal (Apache / Laragon / XAMPP)
+Tempatkan direktori proyek pada root web server (`www` atau `htdocs`), lalu akses melalui host lokal yang dikonfigurasi.
 
