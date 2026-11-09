@@ -175,24 +175,7 @@ flowchart TD
 
 ## 3. Dokumentasi Program Saat Dijalankan
 
-> Bagian ini menampilkan bukti tangkapan layar pengujian antarmuka dan rekaman video pengujian seluruh fungsionalitas CRUD:
-
-### 1. Manajemen Data Buku (CRUD Buku)
-*Tangkapan layar form tambah/edit buku dan daftar katalog buku pada `view/books.php`:*
-
-![Manajemen Data Buku](Dokumentasi/books_crud.png)
-
-### 2. Manajemen Data Anggota (CRUD Anggota)
-*Tangkapan layar form tambah/edit anggota dan daftar anggota perpustakaan pada `view/members.php`:*
-
-![Manajemen Data Anggota](Dokumentasi/members_crud.png)
-
-### 3. Transaksi Peminjaman & Pengembalian (CRUD Peminjaman)
-*Tangkapan layar form transaksi peminjaman buku berelasi dan tabel status peminjaman pada `view/loans.php`:*
-
-![Transaksi Peminjaman](Dokumentasi/loans_crud.png)
-
-### 4. Rekaman Video Pengujian Website (Demonstrasi Lengkap)
+### Rekaman Video Pengujian Website
 Rekaman video demonstrasi menyeluruh yang memperlihatkan operasi Create, Read, Update, dan Delete untuk ketiga tabel (`books`, `members`, `loans`), validasi stok buku, serta pengembalian buku:
 
 - **Berkas Video:** [`Dokumentasi/dokumentasi_tp7.mp4`](Dokumentasi/dokumentasi_tp7.mp4)
